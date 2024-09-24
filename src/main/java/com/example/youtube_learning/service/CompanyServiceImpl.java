@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.example.youtube_learning.entity.Company;
+import com.example.youtube_learning.exceptions.CompanyIdNotFOund;
 import com.example.youtube_learning.repository.CompanyRepository;
 
 @Service
@@ -29,7 +30,13 @@ public class CompanyServiceImpl implements CompanyService {
 
 	@Override
 	public Company getCompanyById(long companyId) {
-		return companyRepository.findById(companyId).orElse(null);
+
+		if (companyRepository.existsById(companyId)) {
+
+			return companyRepository.findById(companyId).get();
+		} else
+			throw new CompanyIdNotFOund("Id not present in the database");
+
 	}
 
 	@Override
