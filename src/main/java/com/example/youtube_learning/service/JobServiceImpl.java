@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.example.youtube_learning.entity.Job;
+import com.example.youtube_learning.exceptions.JobIdNotFound;
 import com.example.youtube_learning.repository.JobRepository;
 
 @Service
@@ -24,8 +25,13 @@ public class JobServiceImpl implements JobService {
 
 	@Override
 	public Job getJobById(long jobId) {
-		return jobRepository.findById(jobId).orElse(null);
-
+		
+		if(jobRepository.existsById(jobId)) {
+			return jobRepository.findById(jobId).get();
+		}
+		else
+			throw new JobIdNotFound("Job Id Not found in database");
+		
 	}
 
 	@Override

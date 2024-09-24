@@ -35,7 +35,7 @@ public class CompanyServiceImpl implements CompanyService {
 
 			return companyRepository.findById(companyId).get();
 		} else
-			throw new CompanyIdNotFOund("Id not present in the database");
+			throw new CompanyIdNotFOund("Company Id not present in the database");
 
 	}
 

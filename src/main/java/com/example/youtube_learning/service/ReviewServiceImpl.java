@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.youtube_learning.entity.Company;
 import com.example.youtube_learning.entity.Review;
+import com.example.youtube_learning.exceptions.CompanyIdNotFOund;
 import com.example.youtube_learning.repository.CompanyRepository;
 import com.example.youtube_learning.repository.ReviewRepository;
 
@@ -28,9 +29,9 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	public Review createReviewByCompanyId(Long companyId, Review review) {
-		Optional<Company> company = companyRepository.findById(companyId);
-		if (company.isPresent()) {
-			review.setCompany(company.get());
+		Company company = findCompanyId(companyId);
+		if (company != null) {
+			review.setCompany(company);
 			return reviewRepository.save(review);
 		}
 		return null;
@@ -38,16 +39,15 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	public Review getByCompanyIdAndReviewId(Long companyId, Long reviewId) {
-		List<Review> reviews = reviewRepository.findByCompanyId(companyId);
-
+		List<Review> reviews = getAllReviewsByCompanyId(companyId);
 		return reviews.stream().filter(review -> review.getId().equals(reviewId)).findFirst().orElse(null);
 	}
 
 	@Override
 	public Review updateReviewByReviewIdAndCompanyId(Long companyId, Long reviewId, Review review) {
-		Optional<Company> company = companyRepository.findById(companyId);
-		if (findCompanyId(companyId)) {
-			review.setCompany(company.get());
+		Company company = findCompanyId(companyId);
+		if (company != null) {
+			review.setCompany(company);
 			return reviewRepository.save(review);
 		}
 		return null;
@@ -55,7 +55,7 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	public Boolean deleteReviewByReviewIdAndCompanyId(Long companyId, Long reviewId) {
-		if (findCompanyId(companyId) && reviewRepository.existsById(reviewId)) {
+		if (companyRepository.existsById(companyId) && reviewRepository.existsById(reviewId)) {
 			Review review = reviewRepository.findById(reviewId).orElse(null);
 			Company company = review.getCompany();
 			company.getReviews().remove(review);
@@ -67,21 +67,20 @@ public class ReviewServiceImpl implements ReviewService {
 //				companyOld.setJobs(company.getJobs());
 				companyOld.setReviews(company.getReviews());
 				companyRepository.save(companyOld);
-				
+
 			}
 			reviewRepository.deleteById(reviewId);
 			return true;
-
 		}
 		return false;
 	}
 
-	public Boolean findCompanyId(Long companyId) {
+	public Company findCompanyId(Long companyId) {
 		Optional<Company> company = companyRepository.findById(companyId);
 		if (company.isPresent())
-			return true;
+			return companyRepository.findById(companyId).get();
 		else
-			return false;
+			throw new CompanyIdNotFOund("Company Id not present in the database");
 	}
 
 }
