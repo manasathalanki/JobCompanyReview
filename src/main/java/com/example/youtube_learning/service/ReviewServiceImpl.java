@@ -46,7 +46,7 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override
 	public Review updateReviewByReviewIdAndCompanyId(Long companyId, Long reviewId, Review review) {
 		Optional<Company> company = companyRepository.findById(companyId);
-		if (company.isPresent()) {
+		if (findCompanyId(companyId)) {
 			review.setCompany(company.get());
 			return reviewRepository.save(review);
 		}
@@ -55,8 +55,33 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	public Boolean deleteReviewByReviewIdAndCompanyId(Long companyId, Long reviewId) {
-		
-		return null;
+		if (findCompanyId(companyId) && reviewRepository.existsById(reviewId)) {
+			Review review = reviewRepository.findById(reviewId).orElse(null);
+			Company company = review.getCompany();
+			company.getReviews().remove(review);
+			Optional<Company> companyOptional = companyRepository.findById(companyId);
+			if (companyOptional.isPresent()) {
+				Company companyOld = companyOptional.get();
+//				companyOld.setName(company.getName());
+//				companyOld.setDescription(company.getDescription());
+//				companyOld.setJobs(company.getJobs());
+				companyOld.setReviews(company.getReviews());
+				companyRepository.save(companyOld);
+				
+			}
+			reviewRepository.deleteById(reviewId);
+			return true;
+
+		}
+		return false;
+	}
+
+	public Boolean findCompanyId(Long companyId) {
+		Optional<Company> company = companyRepository.findById(companyId);
+		if (company.isPresent())
+			return true;
+		else
+			return false;
 	}
 
 }
