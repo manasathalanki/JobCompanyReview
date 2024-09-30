@@ -55,6 +55,11 @@
 			<artifactId>mysql-connector-j</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+		<!--<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>-->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -82,7 +87,7 @@
 	</dependencies>
 
 	<build>
-	<finalName>youtube-learning</finalName>
+		<finalName>youtube-learning</finalName>
 		<plugins>
 
 			<!--	<plugin>

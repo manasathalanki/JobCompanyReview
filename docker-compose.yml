@@ -1,29 +1,23 @@
-version: '3'
+version: '3.0'
+
 services:
   spring-app:
     image: jobcompanyreview
     container_name: spring-app
     build: .
     ports:
-      - "9001:9001"
+      - "9001:1043"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3307/youtube_learning_db
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/mydb
       - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=rootpassword
-    depends_on:
-      - mysql-db
+      - SPRING_DATASOURCE_PASSWORD=root
+    networks:
+      - mysql_network  # Ensure this is the same network as MySQL
+    restart: unless-stopped
 
-  mysql-db:
-    image: mysql:8.0
-    container_name: mysql-db
-    restart: always
-    ports:
-      - "3307:3307"
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpassword  # Use this for setting root password
-      MYSQL_DATABASE: youtube_learning_db # Initial database creation
-    volumes:
-      - mysql-data:/var/lib/mysql
+networks:
+  mysql_network:
+    driver: bridge
 
 volumes:
-  mysql-data:
+  mysql_data:
