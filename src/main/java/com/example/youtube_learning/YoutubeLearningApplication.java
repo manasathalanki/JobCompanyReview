@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class YoutubeLearningApplication {
 
 	public static void main(String[] args) {
+//		SpringBootWebSecurityConfiguration
 		SpringApplication.run(YoutubeLearningApplication.class, args);
 	}
 
