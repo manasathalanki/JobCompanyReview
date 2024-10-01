@@ -4,6 +4,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -15,6 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
 	@Bean
@@ -31,12 +33,11 @@ public class SecurityConfig {
 //	public User(String username, String password, boolean enabled, boolean accountNonExpired,
 //	boolean credentialsNonExpired, boolean accountNonLocked,
 //	Collection<? extends GrantedAuthority> authorities)
+		
 	@Bean
 	public UserDetailsService userDetailsService() {
-//		UserDetails users=new User("user1", "User@01", true, true, true, true, null);
 		UserDetails user1 = User.withUsername("user1").password("{noop}password").roles("USER").build();
 		UserDetails user2 = User.withUsername("user2").password("{noop}password").roles("ADMIN").build();
-//		System.out.println(users.getPassword());
 		return new InMemoryUserDetailsManager(user1,user2);
 	}
 

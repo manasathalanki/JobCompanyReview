@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,12 +27,14 @@ public class CompanyController {
 		this.companyService = companyService;
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/")
 	public ResponseEntity<List<Company>> getAllCompanies() {
 		List<Company> companies = companyService.getAllCompanies();
 		return ResponseEntity.ok(companies);
 	}
 
+	
 	@PostMapping("/")
 	public ResponseEntity<Company> createCompany(@RequestBody Company company) {
 		Company createdCompany = companyService.createCompany(company);
