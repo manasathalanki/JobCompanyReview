@@ -27,7 +27,7 @@ public class CompanyController {
 		this.companyService = companyService;
 	}
 
-	@PreAuthorize("hasRole('ADMIN')")
+//	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/")
 	public ResponseEntity<List<Company>> getAllCompanies() {
 		List<Company> companies = companyService.getAllCompanies();
