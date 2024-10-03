@@ -13,6 +13,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
@@ -42,15 +44,22 @@ public class SecurityConfig {
 //	public User(String username, String password, boolean enabled, boolean accountNonExpired,
 //	boolean credentialsNonExpired, boolean accountNonLocked,
 //	Collection<? extends GrantedAuthority> authorities)
+	
+//	noop -> no encoding to be done while storing passwrd
 
 	@Bean
 	public UserDetailsService userDetailsService() {
 		JdbcUserDetailsManager manager =new JdbcUserDetailsManager(dataSource);
-		UserDetails user1 = User.withUsername("user1").password("{noop}password").roles("USER").build();
-		UserDetails user2 = User.withUsername("user2").password("{noop}password").roles("ADMIN").build();
+		UserDetails user1 = User.withUsername("user1").password(passwordEncoder().encode( "password")).roles("USER").build();
+		UserDetails user2 = User.withUsername("user2").password(passwordEncoder().encode( "password")).roles("ADMIN").build();
 		manager.createUser(user2);
 		manager.createUser(user1);
 		return manager;
+	}
+	
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
 	}
 
 }
