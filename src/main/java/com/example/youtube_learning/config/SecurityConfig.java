@@ -39,10 +39,15 @@ public class SecurityConfig {
 		return new AuthTokenFilter();
 	}
 
+	private static final String[] AUTH_WHITELIST = {
+	          "/v3/api-docs/**",
+	          "/swagger-ui/**",
+	          "/login/signin/**"
+	  };
 	@Bean
 	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests(
-				authorizeRequests -> authorizeRequests.requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+				authorizeRequests -> authorizeRequests.requestMatchers(AUTH_WHITELIST).permitAll()
 						.requestMatchers("/login/signin").permitAll().anyRequest().authenticated());
 		http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		http.exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler));
