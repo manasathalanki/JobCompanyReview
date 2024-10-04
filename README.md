@@ -116,3 +116,38 @@ volumes:
   mysql_data:
 
 
+JWT
+===
+1.Adding spring security allows u to form login which means there will be login and logout in it
+2.By Disabling form login there will be no /login and /logout urls(U will get white label error)
+It will make use of authorization headers and JSessionId(UserSession is managed by these cookie)
+Now u can see this under inspect under cookies tab
+3.Cookie is managed here means it is stateful we make it stateless
+http.sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+after this u wont see cookies tab under inspect 
+
+https://github.com/spring-projects/spring-security/blob/main/core/src/main/resources/org/springframework/security/core/userdetails/jdbc/users.ddl
+
+https://github.com/jwtk/jjwt
+
+
+4.JWT
+JwtUtil 
+-> contains utitlity methods for generating,parsing,validating JWTS.
+-> Include generating a token from a username,validating a jwt and extracting the username from a token.
+
+AuthEntryPointJwt
+when an request is not valid for providing custom handling we will use this
+-> provides custom handling for unauthorized requests,typically when authentication is required but not valid.
+-> when an unauthorized request is detected,it logs the error and returns a json response with an error message,status code,and the path attempted.
+
+AuthTokenFilter
+->Filters incoming requests to check for a valid JWT in the header,setting the authentication context if the token is valid,
+->Extracts JWT from request header,validates it and configures the spring security context with user details if the token is valid.
+
+SecurityConfig
+->Configures springsecurity filters and rules for the app.
+-> Sets up the security filter chain,permitting or denying access based on paths and roles,It also configures sesion management tto stateless,which is crucial for JWT usage.
+
+
+
