@@ -1,14 +1,23 @@
 package com.example.youtube_learning.config;
 
+import org.springdoc.core.models.GroupedOpenApi;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
-import org.springdoc.core.models.GroupedOpenApi;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
+@SecurityScheme(
+        name = "Authorization",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer"
+)
 @Configuration
 public class SwaggerConfig {
 
@@ -30,6 +39,14 @@ public class SwaggerConfig {
         return GroupedOpenApi.builder()
             .group("companies")
             .pathsToMatch("/companies/**")
+            .build();
+    }
+    
+    @Bean
+    public GroupedOpenApi loginApi() {
+        return GroupedOpenApi.builder()
+            .group("login")
+            .pathsToMatch("/login/**")
             .build();
     }
 

@@ -1,0 +1,23 @@
+version: '3.0'
+
+services:
+  spring-app:
+    image: jobcompanyreview
+    container_name: spring-app
+    build: .
+    ports:
+      - "9001:1043"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/mydb
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    networks:
+      - mysql_network  # Ensure this is the same network as MySQL
+    restart: unless-stopped
+
+networks:
+  mysql_network:
+    driver: bridge
+
+volumes:
+  mysql_data:
