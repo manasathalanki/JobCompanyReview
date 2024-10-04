@@ -23,8 +23,11 @@ import com.example.youtube_learning.jwt.JwtUtils;
 import com.example.youtube_learning.jwt.LoginRequest;
 import com.example.youtube_learning.jwt.LoginResponse;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/login")
+@Tag(name = "Token Generator")
 public class LoginController {
 
     @Autowired

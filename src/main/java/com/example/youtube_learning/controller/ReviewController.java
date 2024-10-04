@@ -16,8 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.youtube_learning.entity.Review;
 import com.example.youtube_learning.service.ReviewService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/companies/{companyId}")
+@Tag(name = "Reviews")
 public class ReviewController {
 
 	private ReviewService reviewService;

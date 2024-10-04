@@ -15,7 +15,7 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 
 @Configuration
 public class SwaggerConfig {
-	private static final String SECURITY_SCHEME_NAME = "bearerAuth";
+	private static final String SECURITY_SCHEME_NAME = "Bearer";
 
 	@Bean
 	public OpenAPI customOpenAPI() {
@@ -32,23 +32,23 @@ public class SwaggerConfig {
 		
 	}
 
-	@Bean
-	public GroupedOpenApi companyApi() {
-		return GroupedOpenApi.builder().group("companies").pathsToMatch("/companies/**").build();
-	}
-
-	@Bean
-	public GroupedOpenApi loginApi() {
-		return GroupedOpenApi.builder().group("login").pathsToMatch("/login/**").build();
-	}
-
-	@Bean
-	public GroupedOpenApi jobApi() {
-		return GroupedOpenApi.builder().group("jobs").pathsToMatch("/jobs/**").build();
-	}
-
-	@Bean
-	public GroupedOpenApi reviewApi() {
-		return GroupedOpenApi.builder().group("reviews").pathsToMatch("/companies/{companyId}/reviews/**").build();
-	}
+//	@Bean
+//	public GroupedOpenApi companyApi() {
+//		return GroupedOpenApi.builder().group("companies").pathsToMatch("/companies/**").build();
+//	}
+//
+//	@Bean
+//	public GroupedOpenApi loginApi() {
+//		return GroupedOpenApi.builder().group("login").pathsToMatch("/login/**").build();
+//	}
+//
+//	@Bean
+//	public GroupedOpenApi jobApi() {
+//		return GroupedOpenApi.builder().group("jobs").pathsToMatch("/jobs/**").build();
+//	}
+//
+//	@Bean
+//	public GroupedOpenApi reviewApi() {
+//		return GroupedOpenApi.builder().group("reviews").pathsToMatch("/companies/{companyId}/reviews/**").build();
+//	}
 }
