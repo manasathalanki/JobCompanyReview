@@ -1,4 +1,4 @@
-package com.example.youtube_learning.jwt;
+package com.example.youtube_learning.dto;
 
 import java.util.List;
 
@@ -13,7 +13,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class LoginResponse {
     private String jwtToken;
-
     private String username;
     private List<String> roles;
 

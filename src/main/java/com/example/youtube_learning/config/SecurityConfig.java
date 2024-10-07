@@ -21,22 +21,20 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.example.youtube_learning.jwt.AuthEntryPointJwt;
-import com.example.youtube_learning.jwt.AuthTokenFilter;
+import com.example.youtube_learning.jwt.JwtAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 //@EnableMethodSecurity
 public class SecurityConfig {
 
-	@Autowired
-	DataSource dataSource;
 
 	@Autowired
 	private AuthEntryPointJwt unauthorizedHandler;
 
 	@Bean
-	public AuthTokenFilter authenticationJwtTokenFilter() {
-		return new AuthTokenFilter();
+	public JwtAuthenticationFilter authenticationJwtTokenFilter() {
+		return new JwtAuthenticationFilter();
 	}
 
 	private static final String[] AUTH_WHITELIST = {
@@ -48,7 +46,7 @@ public class SecurityConfig {
 	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests(
 				authorizeRequests -> authorizeRequests.requestMatchers(AUTH_WHITELIST).permitAll()
-						.requestMatchers("/login/signin").permitAll().anyRequest().authenticated());
+						.requestMatchers("/login/signin","/login/signup").permitAll().anyRequest().authenticated());
 		http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		http.exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler));
 		// http.httpBasic(withDefaults());
@@ -59,26 +57,7 @@ public class SecurityConfig {
 		return http.build();
 	}
 
-	@Bean
-	public UserDetailsService userDetailsService(DataSource dataSource) {
-		return new JdbcUserDetailsManager(dataSource);
-	}
 
-	@Bean
-	public CommandLineRunner initData(UserDetailsService userDetailsService) {
-		return args -> {
-			JdbcUserDetailsManager manager = (JdbcUserDetailsManager) userDetailsService;
-			UserDetails user1 = User.withUsername("user1").password(passwordEncoder().encode("password")).roles("USER")
-					.build();
-			UserDetails user2 = User.withUsername("user2")
-					// .password(passwordEncoder().encode("adminPass"))
-					.password(passwordEncoder().encode("password")).roles("ADMIN").build();
-
-			JdbcUserDetailsManager userDetailsManager = new JdbcUserDetailsManager(dataSource);
-			userDetailsManager.createUser(user1);
-			userDetailsManager.createUser(user2);
-		};
-	}
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {

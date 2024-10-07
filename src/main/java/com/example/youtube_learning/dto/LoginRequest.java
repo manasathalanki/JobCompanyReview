@@ -1,4 +1,4 @@
-package com.example.youtube_learning.jwt;
+package com.example.youtube_learning.dto;
 
 import lombok.Getter;
 import lombok.Setter;
