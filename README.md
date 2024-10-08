@@ -150,4 +150,55 @@ SecurityConfig
 -> Sets up the security filter chain,permitting or denying access based on paths and roles,It also configures sesion management tto stateless,which is crucial for JWT usage.
 
 
+spring-batch
+=============
+when u want to transfer data from source to destination
+-> For ex: Billing analysis system 
+U have stored in csv file but this data u want to transfer it to database
+and vice versa we will do this by task executor framework
+
+
+Architecture os spring batch
+-----------------------------
+1.JOB LAUNCHER - interface to launch spring batch jobs has job() and it will call JR(job repository) 
+2.JobRepository - Helps to maintain the state of job whether it is success or failure(state management)is important while dealing with large volume of data to check whether job is running or not if it is we have to re-run the job
+3.JOB - component talks to STEP(combo of ITEMREADER+ITEMPROCESSOR+ITEMWRITER) and one job can contain n no of steps
+4.ITEMREADER - reads the data from source
+5.ITEMPROCESSOR - process the data (any operation can be doine while writing the data)
+6.ITEMWRITER - dumps the data to destination
+
+csv to db
+==========
+1.Create an entity and add fields as per ur csv file.
+2.Create an repository extends JpaRepository
+3.Add all datasource related properties in app.props.
+spring.batch.job.enabled=false
+4.Place ur csv file in resources folder
+5.Create an spring batch config STEP(combo of ITEMREADER+ITEMPROCESSOR+ITEMWRITER)
+
+
+@Configuration
+@EnableBatchProcessing
+Class SpringBatchConfig(){
+
+JobBuilderFactory jobfactory;
+StepBuilderFactory stepFactory;
+CustomerRepository repo;
+
+// read from source
+@Bean
+FlatFileItemReader<Customer> reader(){
+
+
+
+
+}
+
+
+
+
+
+
+}
+
 
