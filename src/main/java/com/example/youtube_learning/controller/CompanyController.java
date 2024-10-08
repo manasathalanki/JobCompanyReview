@@ -16,8 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.youtube_learning.entity.Company;
 import com.example.youtube_learning.service.CompanyService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/companies")
+@Tag(name = "Companies")
+//@SecurityRequirement(name = "Bearer")
 public class CompanyController {
 
 	private final CompanyService companyService;
@@ -26,12 +30,14 @@ public class CompanyController {
 		this.companyService = companyService;
 	}
 
+//	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/")
 	public ResponseEntity<List<Company>> getAllCompanies() {
 		List<Company> companies = companyService.getAllCompanies();
 		return ResponseEntity.ok(companies);
 	}
 
+	
 	@PostMapping("/")
 	public ResponseEntity<Company> createCompany(@RequestBody Company company) {
 		Company createdCompany = companyService.createCompany(company);
