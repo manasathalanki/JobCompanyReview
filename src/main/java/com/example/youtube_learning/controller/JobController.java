@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.youtube_learning.entity.Job;
+import com.example.youtube_learning.entity.JobPosting;
 import com.example.youtube_learning.service.JobService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -30,20 +30,20 @@ public class JobController {
 	}
 
 	@GetMapping("/all")
-	public ResponseEntity<List<Job>> retrieveAllJobs() {
-		List<Job> jobs = jobService.getAllJobs();
+	public ResponseEntity<List<JobPosting>> retrieveAllJobs() {
+		List<JobPosting> jobs = jobService.getAllJobs();
 		return ResponseEntity.ok(jobs);
 	}
 
 	@PostMapping("/create")
-	public ResponseEntity<Job> createJob(@RequestBody Job job) {
-		Job createdJob = jobService.createJob(job);
+	public ResponseEntity<JobPosting> createJob(@RequestBody JobPosting job) {
+		JobPosting createdJob = jobService.createJob(job);
 		return new ResponseEntity<>(createdJob, HttpStatus.CREATED); // Return 201 CREATED
 	}
 
 	@GetMapping("/{jobId}")
-	public ResponseEntity<Job> getByJobId(@PathVariable(value = "jobId") long jobId) {
-		Job job = jobService.getJobById(jobId);
+	public ResponseEntity<JobPosting> getByJobId(@PathVariable(value = "jobId") long jobId) {
+		JobPosting job = jobService.getJobById(jobId);
 		if (job != null) {
 			return ResponseEntity.ok(job); // Return 200 OK if job is found
 		} else {
@@ -52,7 +52,7 @@ public class JobController {
 	}
 
 	@PutMapping("/{jobId}")
-	public ResponseEntity<Boolean> updateJob(@PathVariable(value = "jobId") long jobId, @RequestBody Job updatedJob) {
+	public ResponseEntity<Boolean> updateJob(@PathVariable(value = "jobId") long jobId, @RequestBody JobPosting updatedJob) {
 		boolean updated = jobService.updateJob(jobId, updatedJob);
 		if (updated) {
 			return ResponseEntity.ok(true); // Return 200 OK if update is successful

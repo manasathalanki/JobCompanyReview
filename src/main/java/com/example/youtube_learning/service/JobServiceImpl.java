@@ -5,26 +5,26 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.example.youtube_learning.entity.Job;
+import com.example.youtube_learning.entity.JobPosting;
 import com.example.youtube_learning.exceptions.JobIdNotFound;
-import com.example.youtube_learning.repository.JobRepository;
+import com.example.youtube_learning.repository.JobPostingRepository;
 
 @Service
 public class JobServiceImpl implements JobService {
 
-	private JobRepository jobRepository;
+	private JobPostingRepository jobRepository;
 
-	public JobServiceImpl(JobRepository jobRepository) {
+	public JobServiceImpl(JobPostingRepository jobRepository) {
 		this.jobRepository = jobRepository;
 	}
 
 	@Override
-	public Job createJob(Job job) {
+	public JobPosting createJob(JobPosting job) {
 		return jobRepository.save(job);
 	}
 
 	@Override
-	public Job getJobById(long jobId) {
+	public JobPosting getJobById(long jobId) {
 		
 		if(jobRepository.existsById(jobId)) {
 			return jobRepository.findById(jobId).get();
@@ -46,10 +46,10 @@ public class JobServiceImpl implements JobService {
 	}
 
 	@Override
-	public boolean updateJob(long jobId, Job updatedJob) {
-		Optional<Job> jobOptional = jobRepository.findById(jobId);
+	public boolean updateJob(long jobId, JobPosting updatedJob) {
+		Optional<JobPosting> jobOptional = jobRepository.findById(jobId);
 		if (jobOptional.isPresent()) {
-			Job job = jobOptional.get();
+			JobPosting job = jobOptional.get();
 			job.setDescription(updatedJob.getDescription());
 			job.setTitle(updatedJob.getTitle());
 			job.setMinSalary(updatedJob.getMinSalary());
@@ -62,8 +62,8 @@ public class JobServiceImpl implements JobService {
 	}
 
 	@Override
-	public List<Job> getAllJobs() {
-		return (List<Job>) jobRepository.findAll();
+	public List<JobPosting> getAllJobs() {
+		return (List<JobPosting>) jobRepository.findAll();
 
 	}
 

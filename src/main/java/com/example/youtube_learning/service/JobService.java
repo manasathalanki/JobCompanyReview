@@ -2,18 +2,18 @@ package com.example.youtube_learning.service;
 
 import java.util.List;
 
-import com.example.youtube_learning.entity.Job;
+import com.example.youtube_learning.entity.JobPosting;
 
 
 public interface JobService {
 
-	Job createJob(Job job);
+	JobPosting createJob(JobPosting job);
 
-	List<Job> getAllJobs();
+	List<JobPosting> getAllJobs();
 
-	Job getJobById(long jobId);
+	JobPosting getJobById(long jobId);
 
 	boolean deleteJob(long jobId);
 
-	boolean updateJob(long jobId, Job updatedJob);
+	boolean updateJob(long jobId, JobPosting updatedJob);
 }
