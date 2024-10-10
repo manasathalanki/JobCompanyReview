@@ -1,4 +1,5 @@
 # JobCompanyReview
+
 https://youtu.be/BLlEgtp2_i8?si=XNtTZHV-8jZoCHOe
 
 Docker steps
@@ -175,30 +176,9 @@ csv to db
 spring.batch.job.enabled=false
 4.Place ur csv file in resources folder
 5.Create an spring batch config STEP(combo of ITEMREADER+ITEMPROCESSOR+ITEMWRITER)
+6.if spring batch tables are not created automatically run the scripts which are placed in schema.sql 
 
-
-@Configuration
-@EnableBatchProcessing
-Class SpringBatchConfig(){
-
-JobBuilderFactory jobfactory;
-StepBuilderFactory stepFactory;
-CustomerRepository repo;
-
-// read from source
-@Bean
-FlatFileItemReader<Customer> reader(){
-
-
-
-
-}
-
-
-
-
-
-
-}
+for more reference 
+https://github.com/spring-projects/spring-batch/blob/main/spring-batch-core/src/main/resources/org/springframework/batch/core/schema-mysql.sql
 
 
