@@ -128,16 +128,17 @@ public class ExportServiceImpl {
 		Stream.of("Id", "FirstName", "LastName", "Email", "Gender", "ContactNo", "Country", "DOB")
 				.forEach(headerTitle -> {
 					PdfPCell header = new PdfPCell();
-					Font headFont = FontFactory.getFont(BaseFont.TIMES_BOLD,16,6,BaseColor.RED);
+					Font headFont = FontFactory.getFont(BaseFont.TIMES_BOLD,10,3,BaseColor.RED);
 					header.setBackgroundColor(BaseColor.LIGHT_GRAY);
 					header.setHorizontalAlignment(Element.ALIGN_CENTER);
 					header.setBorderWidth(2);
+					header.setNoWrap(true);
 					header.setPhrase(new Phrase(headerTitle, headFont));
 					table.addCell(header);
 				});
 
 		for (Customer customer : customersList) {
-			PdfPCell idCell = new PdfPCell(new Phrase(customer.getId()));
+			PdfPCell idCell = new PdfPCell(new Phrase(String.valueOf(customer.getId())));
 			idCell.setPaddingLeft(4);
 			idCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			idCell.setHorizontalAlignment(Element.ALIGN_CENTER);
