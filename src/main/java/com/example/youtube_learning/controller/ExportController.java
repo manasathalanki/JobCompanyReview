@@ -3,6 +3,7 @@ package com.example.youtube_learning.controller;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,27 +13,29 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.youtube_learning.service.ExportToExcelImpl;
+import com.example.youtube_learning.entity.Customer;
+import com.example.youtube_learning.service.ExportServiceImpl;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/export")
-public class CsvToExcelController {
+@Tag(description="Export/convert one form of data to another", name = "Export")
+public class ExportController {
 
 	@Autowired
-	private ExportToExcelImpl excelImpl;
+	private ExportServiceImpl exportImpl;
 
 	@PostMapping(value = "/csv-excel", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = "application/octet-stream")
 	@Operation(summary = "Convert CSV to Excel", description = "Upload a CSV file and download the result as an Excel file.")
 	public ResponseEntity<?> export(@RequestParam("customersFile") MultipartFile file) throws IOException {
 
-		Workbook workbook = excelImpl.exportToExcel(file);
+		Workbook workbook = exportImpl.exportToExcel(file);
 
 		workbook.setSheetName(0, "customers-data");
 		ByteArrayOutputStream outStream = new ByteArrayOutputStream();
@@ -44,6 +47,15 @@ public class CsvToExcelController {
 
 		return ResponseEntity.ok().headers(headers)
 				.body(new InputStreamResource(new ByteArrayInputStream(outStream.toByteArray())));
+	}
+
+	@PostMapping(value = "/csv-db", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@Operation(summary = "Convert CSV to DB", description = "Upload a CSV file and return the stored data into the db")
+	public ResponseEntity<?> uploadCsvToDB(@RequestParam("customersFile") MultipartFile file) throws IOException {
+
+		List<Customer> customerList = exportImpl.convertCsvToDb(file);
+
+		return ResponseEntity.ok().body("Stored SuccessFully");
 	}
 
 }
