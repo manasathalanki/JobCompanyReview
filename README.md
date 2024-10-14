@@ -168,8 +168,8 @@ Architecture os spring batch
 5.ITEMPROCESSOR - process the data (any operation can be doine while writing the data)
 6.ITEMWRITER - dumps the data to destination
 
-csv to db
-==========
+csv to db using spring-batch
+=============================
 1.Create an entity and add fields as per ur csv file.
 2.Create an repository extends JpaRepository
 3.Add all datasource related properties in app.props.
@@ -180,5 +180,21 @@ spring.batch.job.enabled=false
 
 for more reference 
 https://github.com/spring-projects/spring-batch/blob/main/spring-batch-core/src/main/resources/org/springframework/batch/core/schema-mysql.sql
+
+csv to excel using apache-poi
+=============================
+Using workbook
+
+csv to db using apache-commons-csv
+==================================
+Using CsvParser,CsvFormatter,CsvReader
+
+
+db to pdf using itextpdf
+========================
+Reference Links
+https://www.baeldung.com/java-pdf-creation
+https://github.com/loizenai/spring-boot-itext-pdf-generation-example/tree/master
+
 
 
